@@ -1,5 +1,5 @@
 <div>
-    <div class="bg-white shadow rounded-lg p-6">
+    <div class="bg-white shadow rounded-lg p-6 mb-8">
         <h2 class="font-semibold text-lg text-gray-800 mb-6">Formulario</h2>
         <form wire:submit="save" novalidate>
             <div>
@@ -40,5 +40,14 @@
                 </x-button>
             </div>
         </form>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="font-semibold text-lg text-gray-800 mb-6">Lista de Posts</h2>
+        <ul class="list-disc pl-5 list-inside">
+            @foreach($posts as $post)
+                <li>{{$post->title}}</li>
+            @endforeach
+        </ul>
     </div>
 </div>
