@@ -41,4 +41,16 @@
             </div>
         </form>
     </div>
+
+    <div class="bg-white shadow rounded-lg p-6">
+        <h2 class="font-semibold text-lg text-gray-800 mb-6">Posts</h2>
+        <ul>
+            @foreach($posts as $post)
+                <li class="border-b border-gray-200 py-4">
+                    <h3 class="font-semibold text-gray-800">{{ $post->title }}</h3>
+                    <p class="text-gray-600">{{ $post->content }}</p>
+                </li>
+            @endforeach
+        </ul>
+    </div>
 </div>
