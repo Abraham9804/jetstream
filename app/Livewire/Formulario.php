@@ -10,32 +10,36 @@ use Pest\Plugins\Only;
 
 class Formulario extends Component
 {
-    public $categories, $tags, $posts;
+    public $categories, $tags;
     public $category_id = "", $title, $content;
     public $selectedTags = [];
+    public $posts;
 
     public function mount()
     {
         $this->categories = Category::all();
         $this->tags = Tag::all();
-        $this->posts = Post::all();
+        $this->posts = Post::with('category', 'tags')->get();
     }
 
     public function save()
     {
-        /*dd([
+        /*Post::create([
             'category_id' => $this->category_id,
             'title' => $this->title,
             'content' => $this->content,
             'selectedTags' => $this->selectedTags,
         ]);*/
 
-        $post = Post::create($this->only(['category_id', 'title', 'content']));
+        $post = Post::create(
+             $this->only('category_id', 'title', 'content')
+        );
+
         $post->tags()->attach($this->selectedTags);
-        $this->reset(['category_id', 'title', 'content', 'selectedTags']);
-        $this->posts = Post::all(); // Refresh the posts list
+        $this->reset('category_id', 'title', 'content', 'selectedTags');
+        $this->posts = Post::with('category', 'tags')->get();
     }
-    
+
     public function render()
     {
         return view('livewire.formulario');

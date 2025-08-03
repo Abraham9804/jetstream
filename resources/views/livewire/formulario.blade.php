@@ -1,5 +1,5 @@
 <div>
-    <div class="bg-white shadow rounded-lg p-6">
+    <div class="bg-white shadow rounded-lg p-6 mb-8">
         <h2 class="font-semibold text-lg text-gray-800 mb-6">Formulario</h2>
         <form wire:submit="save" novalidate>
             <div>
