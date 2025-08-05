@@ -10,11 +10,18 @@ use Pest\Plugins\Only;
 
 class Formulario extends Component
 {
+    public $postId;
     public $categories, $tags;
     public $category_id = "", $title, $content;
     public $selectedTags = [];
     public $posts;
     public $openEdit = false;
+    public $postEdit = [
+        'title' => '',
+        'content' => '',
+        'category_id' => '',
+        'tags' => []
+    ];
 
     public function mount()
     {
@@ -25,13 +32,6 @@ class Formulario extends Component
 
     public function save()
     {
-        /*Post::create([
-            'category_id' => $this->category_id,
-            'title' => $this->title,
-            'content' => $this->content,
-            'selectedTags' => $this->selectedTags,
-        ]);*/
-
         $post = Post::create(
              $this->only('category_id', 'title', 'content')
         );
@@ -41,9 +41,29 @@ class Formulario extends Component
         $this->posts = Post::with('category', 'tags')->get();
     }
 
-    public function showEditForm()
+    public function edit($postId)
     {
-        $this->openEdit = !$this->openEdit;
+        $this->openEdit = true;
+        $this->postId = $postId;
+        $post = Post::with('tags')->find($postId);
+        
+        $this->postEdit = [
+            'title' => $post->title,
+            'content' => $post->content,
+            'category_id' => $post->category_id,
+            'tags' => $post->tags->pluck('id')->toArray()
+        ];
+        
+    }
+
+    public function update()
+    {
+        $post = Post::find($this->postId);
+        $post->update($this->postEdit);
+        $post->tags()->sync($this->postEdit['tags']);
+
+        $this->posts = Post::with('category', 'tags')->get();
+        $this->reset('postEdit', 'openEdit', 'postId');
     }
 
     public function render()
