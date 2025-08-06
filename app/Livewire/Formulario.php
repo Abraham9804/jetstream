@@ -66,6 +66,13 @@ class Formulario extends Component
         $this->reset('postEdit', 'openEdit', 'postId');
     }
 
+    public function destroy($postId)
+    {
+       $post = Post::find($postId);
+       $post->delete();
+       $this->posts = Post::with('category', 'tags')->get();
+    }
+
     public function render()
     {
         return view('livewire.formulario');

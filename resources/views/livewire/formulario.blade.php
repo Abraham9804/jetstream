@@ -55,7 +55,7 @@
                         <x-button wire:click="edit({{ $post->id }})">
                             Editar
                         </x-button>
-                        <x-danger-button>
+                        <x-danger-button wire:click="destroy({{ $post->id }})" class="ml-2">
                             Eliminar
                         </x-danger-button>
                     </div>
@@ -66,60 +66,59 @@
     </div>
 
     <!-- Modal for Edit Form -->
-    @if($openEdit)
-        <div class="bg-gray-800 bg-opacity-25 fixed inset-0" wire:click="$set('openEdit', false)">
-            <div class="py-12">
-                <div class="max-w-5xl mx-auto sm:px-6 lg:px-8" wire:click.stop>
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                        <div class="bg-white shadow rounded-lg p-6">
-                            <h2 class="font-semibold text-lg text-gray-800 mb-6">Formulario de edicion</h2>
-                            <form wire:submit="update" novalidate>
-                                <div>
-                                    <x-label for="title" value="Titulo" />
-                                    <x-input id="title" type="text" class="mt-1 block w-full" autofocus wire:model="postEdit.title" />
-                                </div>
-                                <div>
-                                    <x-label for="content" value="Contenido" />
-                                    <x-textarea id="content" class="mt-1 block w-full" rows="3" wire:model="postEdit.content">
-                                        {{ old('content') }}
-                                    </x-textarea>
-                                </div>
-                                <div>
-                                    <x-label for="category_id" value="Categoria" />
-                                    <x-select id="category_id" class="mt-1 block w-full" wire:model="postEdit.category_id">
-                                        <option value="" disabled>Select Category</option>
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                        @endforeach
-                                    </x-select>
-                                </div>
-                                <div>
-                                    <x-label for="tags" value="Tags" />
-                                    <ul>
-                                        @foreach($tags as $tag)
-                                            <li>
-                                                <label for="{{$tag->id}}" value="{{$tag->name}}">
-                                                    <x-checkbox id="{{$tag->id}}" value="{{$tag->id}}" wire:model="postEdit.tags"/>
-                                                    {{$tag->name}}
-                                                </label>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                                <div class="mt-6 flex justify-end">
-                                    <x-danger-button wire:click="$set('openEdit', false)" class="mr-3">
-                                        Cancel
-                                    </x-danger-button>
-                                    <x-button type="submit">
-                                        Submit
-                                    </x-button>
-                                </div>
-                            </form>
-                        </div> 
-                    </div>
+    
+
+    <x-dialog-modal wire:model="openEdit" maxWidth="2xl">
+        <x-slot name="title">
+            Editar Post
+        </x-slot>
+
+        <x-slot name="content">
+            <form wire:submit="update" novalidate>
+                <div>
+                    <x-label for="title" value="Titulo" />
+                    <x-input id="title" type="text" class="mt-1 block w-full" autofocus wire:model="postEdit.title" />
                 </div>
+                <div>
+                    <x-label for="content" value="Contenido" />
+                    <x-textarea id="content" class="mt-1 block w-full" rows="3" wire:model="postEdit.content">
+                        {{ old('content') }}
+                    </x-textarea>
+                </div>
+                <div>
+                    <x-label for="category_id" value="Categoria" />
+                    <x-select id="category_id" class="mt-1 block w-full" wire:model="postEdit.category_id">
+                        <option value="" disabled>Select Category</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </x-select>
+                </div>
+                <div>
+                    <x-label for="tags" value="Tags" />
+                    <ul>
+                        @foreach($tags as $tag)
+                            <li>
+                                <label for="{{$tag->id}}" value="{{$tag->name}}">
+                                    <x-checkbox id="{{$tag->id}}" value="{{$tag->id}}" wire:model="postEdit.tags"/>
+                                    {{$tag->name}}
+                                </label>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                
+            </form>
+        </x-slot>
+        <x-slot name="footer">
+            <div class="mt-6 flex justify-end">
+                    <x-danger-button wire:click="$set('openEdit', false)" class="mr-3">
+                        Cancel
+                    </x-danger-button>
+                    <x-button wire:click="update">
+                        Submit
+                    </x-button>
             </div>
-            
-        </div>
-    @endif
+        </x-slot>
+    </x-dialog-modal>
 </div>
