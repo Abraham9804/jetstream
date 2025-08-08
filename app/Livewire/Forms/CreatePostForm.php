@@ -13,22 +13,20 @@ class CreatePostForm extends Form
     
     public function save()
     {
-        $this->validate(
-            [
-                'category_id' => 'required|exists:categories,id',
-                'title' => 'required|string|max:255',
-                'content' => 'required|string',
-                'selectedTags' => 'array',
-                'selectedTags.*' => 'exists:tags,id',
-            ],
-            [
-                'category_id.required' => 'La categoría es obligatoria.',
-                'title.required' => 'El título es obligatorio.',
-                'content.required' => 'El contenido es obligatorio.',
-                'selectedTags.array' => 'Las etiquetas deben ser un arreglo.',
-                'selectedTags.*.exists' => 'Una o más etiquetas seleccionadas no existen.'
-            ]
-        );
+        $this->validate([
+                    'category_id' => 'required|exists:categories,id',
+                    'title' => 'required|string|max:255',
+                    'content' => 'required|string',
+                    'selectedTags' => 'array',
+                    'selectedTags.*' => 'exists:tags,id',
+                ],
+                [
+                    'category_id.required' => 'La categoría es obligatoria.',
+                    'title.required' => 'El título es obligatorio.',
+                    'content.required' => 'El contenido es obligatorio.',
+                    'selectedTags.array' => 'Las etiquetas deben ser un arreglo.',
+                    'selectedTags.*.exists' => 'Una o más etiquetas seleccionadas no existen.'
+                ]);
 
         $post = Post::create(
              $this->only('category_id', 'title', 'content')
