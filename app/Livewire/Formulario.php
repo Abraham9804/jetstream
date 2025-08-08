@@ -34,8 +34,8 @@ class Formulario extends Component
     public function save()
     {
         $this->createPostForm->save();
-        
         $this->posts = Post::with('category', 'tags')->get();
+        $this->dispatch('toast', message: 'Post creado correctamente');
     }
 
     public function edit($postId)

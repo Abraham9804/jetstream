@@ -34,5 +34,6 @@ class CreatePostForm extends Form
         $post->tags()->attach($this->selectedTags);
 
         $this->reset('category_id', 'title', 'content', 'selectedTags');
+        
     }
 }

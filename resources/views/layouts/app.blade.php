@@ -10,7 +10,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+        
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -41,5 +41,18 @@
         @stack('modals')
 
         @livewireScripts
+       
+        <script>
+                window.addEventListener('toast', event => {
+                    Toastify({
+                        text: event.detail.message,
+                        duration: 3000,
+                        gravity: "top", // "top" o "bottom"
+                        position: "right", // "left", "center" o "right"
+                        backgroundColor: "#4CAF50",
+                        close: true
+                    }).showToast();
+                });
+        </script>
     </body>
 </html>
