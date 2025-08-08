@@ -82,12 +82,14 @@
                 <div>
                     <x-label for="titleEdit" value="Titulo" />
                     <x-input id="titleEdit" type="text" class="mt-1 block w-full" autofocus wire:model="postEdit.title" />
+                    <x-input-error for="postEdit.title" />
                 </div>
                 <div>
                     <x-label for="contentEdit" value="Contenido" />
                     <x-textarea id="contentEdit" class="mt-1 block w-full" rows="3" wire:model="postEdit.content">
                         {{ old('content') }}
                     </x-textarea>
+                    <x-input-error for="postEdit.content" />
                 </div>
                 <div>
                     <x-label for="category_idEdit" value="Categoria" />
@@ -97,6 +99,7 @@
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </x-select>
+                    <x-input-error for="postEdit.category_id" />
                 </div>
                 <div>
                     <x-label for="tags" value="Tags" />
@@ -108,6 +111,7 @@
                                     {{$tag->name}}
                                 </label>
                             </li>
+                            <x-input-error for="postEdit.tags.{{$tag->id}}" />
                         @endforeach
                     </ul>
                 </div>
