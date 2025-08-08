@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\CreatePostForm;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
@@ -12,8 +13,6 @@ class Formulario extends Component
 {
     public $postId;
     public $categories, $tags;
-    public $category_id = "", $title, $content;
-    public $selectedTags = [];
     public $posts;
     public $openEdit = false;
     public $postEdit = [
@@ -22,6 +21,8 @@ class Formulario extends Component
         'category_id' => '',
         'tags' => []
     ];
+
+    public CreatePostForm $createPostForm;
 
     public function mount()
     {
@@ -32,27 +33,8 @@ class Formulario extends Component
 
     public function save()
     {
-        $this->validate([
-            'category_id' => 'required|exists:categories,id',
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'selectedTags' => 'array',
-            'selectedTags.*' => 'exists:tags,id',
-        ],
-        [
-            'category_id.required' => 'La categoría es obligatoria.',
-            'title.required' => 'El título es obligatorio.',
-            'content.required' => 'El contenido es obligatorio.',
-            'selectedTags.array' => 'Las etiquetas deben ser un arreglo.',
-            'selectedTags.*.exists' => 'Una o más etiquetas seleccionadas no existen.'
-        ]);
-
-        $post = Post::create(
-             $this->only('category_id', 'title', 'content')
-        );
-
-        $post->tags()->attach($this->selectedTags);
-        $this->reset('category_id', 'title', 'content', 'selectedTags');
+        $this->createPostForm->save();
+        
         $this->posts = Post::with('category', 'tags')->get();
     }
 

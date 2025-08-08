@@ -1,28 +1,28 @@
 <div>
     <div class="bg-white shadow rounded-lg p-6 mb-8">
-        <h2 class="font-semibold text-lg text-gray-800 mb-6">Formulario</h2>
+        <h2 class="font-semibold text-lg text-gray-800 mb-6">Formulario de creacion</h2>
         <form wire:submit="save" novalidate>
             <div class="mb-4">
                 <x-label for="title" value="Titulo" />
-                <x-input id="title" type="text" class="mt-1 block w-full" autofocus wire:model="title" />
-                <x-input-error for="title"/>
+                <x-input id="title" type="text" class="mt-1 block w-full" autofocus wire:model="createPostForm.title" />
+                <x-input-error for="createPostForm.title"/>
             </div>
             <div class="mb-4">
                 <x-label for="content" value="Contenido" />
-                <x-textarea id="content" class="mt-1 block w-full" rows="3" wire:model="content">
+                <x-textarea id="content" class="mt-1 block w-full" rows="3" wire:model="createPostForm.content">
                     {{ old('content') }}
                 </x-textarea>
-                <x-input-error for="content" />
+                <x-input-error for="createPostForm.content" />
             </div>
             <div class="mb-4">
                 <x-label for="category_id" value="Categoria" />
-                <x-select id="category_id" class="mt-1 block w-full" wire:model="category_id">
+                <x-select id="category_id" class="mt-1 block w-full" wire:model="createPostForm.category_id">
                     <option value="" disabled>Select Category</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </x-select>
-                <x-input-error for="category_id" />
+                <x-input-error for="createPostForm.category_id" />
             </div>
             <div class="mb-4">
                 <x-label for="tags" value="Tags" />
@@ -30,10 +30,10 @@
                     @foreach($tags as $tag)
                         <li>
                             <label for="{{$tag->id}}" value="{{$tag->name}}">
-                                <x-checkbox id="{{$tag->id}}" value="{{$tag->id}}" wire:model="selectedTags" />
+                                <x-checkbox id="{{$tag->id}}" value="{{$tag->id}}" wire:model="createPostForm.selectedTags" />
                                 {{$tag->name}}
                             </label>
-                            <x-input-error for="selectedTags.{{$tag->id}}" />
+                            <x-input-error for="createPostForm.selectedTags.{{$tag->id}}" />
                         </li>
                     @endforeach
                 </ul>
