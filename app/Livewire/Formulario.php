@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Livewire\Forms\CreatePostForm;
+use App\Livewire\Forms\EditPostForm;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
@@ -11,18 +12,11 @@ use Pest\Plugins\Only;
 
 class Formulario extends Component
 {
-    public $postId;
-    public $categories, $tags;
+    
+    public $categories, $tags; 
     public $posts;
-    public $openEdit = false;
-    public $postEdit = [
-        'title' => '',
-        'content' => '',
-        'category_id' => '',
-        'tags' => []
-    ];
-
     public CreatePostForm $createPostForm;
+    public EditPostForm $editPostForm;
 
     public function mount()
     {
@@ -40,47 +34,15 @@ class Formulario extends Component
 
     public function edit($postId)
     {
-        $this->resetValidation();
-        $this->openEdit = true;
-        $this->postId = $postId;
-        $post = Post::with('tags')->find($postId);
-        
-        $this->postEdit = [
-            'title' => $post->title,
-            'content' => $post->content,
-            'category_id' => $post->category_id,
-            'tags' => $post->tags->pluck('id')->toArray()
-        ];
+        $this->editPostForm->edit($postId);
         
     }
 
     public function update()
     {
-        $post = Post::find($this->postId);
-
-        $this->validate([
-            'postEdit.title' => 'required|string|max:255',
-            'postEdit.content' => 'required|string',
-            'postEdit.category_id' => 'required|exists:categories,id',
-            'postEdit.tags' => 'array',
-            'postEdit.tags.*' => 'exists:tags,id',
-        ],[
-            'postEdit.title.required' => 'El título es obligatorio.',
-            'postEdit.title.string' => 'El título debe ser una cadena de texto.',
-            'postEdit.title.max' => 'El título no puede exceder los 255 caracteres.',
-            'postEdit.content.required' => 'El contenido es obligatorio.',
-            'postEdit.content.string' => 'El contenido debe ser una cadena de texto.',
-            'postEdit.category_id.required' => 'La categoría es obligatoria.',
-            'postEdit.category_id.exists' => 'La categoría seleccionada no existe.',
-            'postEdit.tags.array' => 'Las etiquetas deben ser un arreglo.',
-            'postEdit.tags.*.exists' => 'Una o más etiquetas seleccionadas no existen'
-        ]);
-
-        $post->update($this->postEdit);
-        $post->tags()->sync($this->postEdit['tags']);
-
+        $this->editPostForm->update();
         $this->posts = Post::with('category', 'tags')->get();
-        $this->reset('postEdit', 'openEdit', 'postId');
+        $this->dispatch('toast', message: 'Post actualizado correctamente');
     }
 
     public function destroy($postId)

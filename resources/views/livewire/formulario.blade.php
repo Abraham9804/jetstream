@@ -4,7 +4,7 @@
         <form wire:submit="save" novalidate>
             <div class="mb-4">
                 <x-label for="title" value="Titulo" />
-                <x-input id="title" type="text" class="mt-1 block w-full" autofocus wire:model="createPostForm.title" />
+                <x-input id="title" type="text" class="mt-1 block w-full" autofocus wire:model.debounce.500ms="createPostForm.title" />
                 <x-input-error for="createPostForm.title"/>
             </div>
             <div class="mb-4">
@@ -72,7 +72,7 @@
     <!-- Modal for Edit Form -->
     
 
-    <x-dialog-modal wire:model="openEdit" maxWidth="2xl">
+    <x-dialog-modal wire:model="editPostForm.openEdit" maxWidth="2xl">
         <x-slot name="title">
             Editar Post
         </x-slot>
@@ -81,25 +81,25 @@
             <form wire:submit="update" novalidate>
                 <div>
                     <x-label for="titleEdit" value="Titulo" />
-                    <x-input id="titleEdit" type="text" class="mt-1 block w-full" autofocus wire:model="postEdit.title" />
-                    <x-input-error for="postEdit.title" />
+                    <x-input id="titleEdit" type="text" class="mt-1 block w-full" autofocus wire:model="editPostForm.postEdit.title" />
+                    <x-input-error for="editPostForm.postEdit.title" />
                 </div>
                 <div>
                     <x-label for="contentEdit" value="Contenido" />
-                    <x-textarea id="contentEdit" class="mt-1 block w-full" rows="3" wire:model="postEdit.content">
+                    <x-textarea id="contentEdit" class="mt-1 block w-full" rows="3" wire:model="editPostForm.postEdit.content">
                         {{ old('content') }}
                     </x-textarea>
-                    <x-input-error for="postEdit.content" />
+                    <x-input-error for="editPostForm.postEdit.content" />
                 </div>
                 <div>
                     <x-label for="category_idEdit" value="Categoria" />
-                    <x-select id="category_idEdit" class="mt-1 block w-full" wire:model="postEdit.category_id">
+                    <x-select id="category_idEdit" class="mt-1 block w-full" wire:model="editPostForm.postEdit.category_id">
                         <option value="" disabled>Select Category</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </x-select>
-                    <x-input-error for="postEdit.category_id" />
+                    <x-input-error for="editPostForm.postEdit.category_id" />
                 </div>
                 <div>
                     <x-label for="tags" value="Tags" />
@@ -107,11 +107,11 @@
                         @foreach($tags as $tag)
                             <li>
                                 <label for="{{$tag->id}}Edit" value="{{$tag->name}}">
-                                    <x-checkbox id="{{$tag->id}}Edit" value="{{$tag->id}}" wire:model="postEdit.tags"/>
+                                    <x-checkbox id="{{$tag->id}}Edit" value="{{$tag->id}}" wire:model="editPostForm.postEdit.tags"/>
                                     {{$tag->name}}
                                 </label>
                             </li>
-                            <x-input-error for="postEdit.tags.{{$tag->id}}" />
+                            <x-input-error for="editPostForm.postEdit.tags.{{$tag->id}}" />
                         @endforeach
                     </ul>
                 </div>
@@ -120,7 +120,7 @@
         </x-slot>
         <x-slot name="footer">
             <div class="mt-6 flex justify-end">
-                    <x-danger-button wire:click="$set('openEdit', false)" class="mr-3">
+                    <x-danger-button wire:click="$set('editPostForm.openEdit', false)" class="mr-3">
                         Cancel
                     </x-danger-button>
                     <x-button wire:click="update">
