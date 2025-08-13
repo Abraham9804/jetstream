@@ -4,12 +4,12 @@
         <form wire:submit="save" novalidate>
             <div class="mb-4">
                 <x-label for="title" value="Titulo" />
-                <x-input id="title" type="text" class="mt-1 block w-full" autofocus wire:model.debounce.500ms="createPostForm.title" />
+                <x-input id="title" type="text" class="mt-1 block w-full" autofocus wire:model.live="createPostForm.title" />
                 <x-input-error for="createPostForm.title"/>
             </div>
             <div class="mb-4">
                 <x-label for="content" value="Contenido" />
-                <x-textarea id="content" class="mt-1 block w-full" rows="3" wire:model="createPostForm.content">
+                <x-textarea id="content" class="mt-1 block w-full" rows="3" wire:model.blur="createPostForm.content">
                     {{ old('content') }}
                 </x-textarea>
                 <x-input-error for="createPostForm.content" />
