@@ -9,7 +9,10 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                @livewire('formulario')
-              
+
+               <div class="mt-8">
+                   @livewire('comments')
+               </div>
             </div>
         </div>
     </div>

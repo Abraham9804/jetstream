@@ -33,6 +33,7 @@ class EditPostForm extends Form
         ];
     }
 
+    
     public function update()
     {
         $post = Post::find($this->postId);
