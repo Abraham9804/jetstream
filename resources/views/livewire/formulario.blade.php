@@ -130,18 +130,5 @@
         </x-slot>
     </x-dialog-modal>
 
-    @push('scripts')
-        <script>
-            Livewire.on('toast', function(message){
-                 Toastify({
-                        text: event.detail.message,
-                        duration: 3000,
-                        gravity: "top", // "top" o "bottom"
-                        position: "right", // "left", "center" o "right"
-                        backgroundColor: "#4CAF50",
-                        close: true
-                    }).showToast();
-            })
-        </script>
-    @endpush
+    
 </div>
